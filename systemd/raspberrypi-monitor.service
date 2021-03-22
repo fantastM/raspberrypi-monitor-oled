@@ -1,0 +1,16 @@
+[Unit]
+Description=Raspberry Pi Monitor Service
+Documentation=https://github.com/fantasticmao/
+After=network.target
+
+[Service]
+Type=simple
+PIDFile=/run/raspberrypi-monitor.pid
+ExecStart=
+ExecReload=
+ExecStop=
+TimeoutStopSec=5
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
