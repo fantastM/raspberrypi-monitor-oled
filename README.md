@@ -71,6 +71,7 @@
 
 Which means, there are all four possible control bytes in the write mode for I2C:
 
+```text
 +--+----+----+--------------------+-----------------+
 |Co|D/C#|Hex |Comment             |Address Increment|
 +--+----+----+--------------------+-----------------+
@@ -82,4 +83,5 @@ Which means, there are all four possible control bytes in the write mode for I2C
 +--+----+----+--------------------+-----------------+
 |1 |1   |0xC0|Write single data   |Yes              |
 +--+----+----+--------------------+-----------------+
+```
 
