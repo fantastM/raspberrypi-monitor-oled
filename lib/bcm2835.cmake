@@ -14,12 +14,11 @@ if(NOT bcm2835_POPULATED)
     message(NOTICE "-- Build bcm2835 ing ...")
     # https://cmake.org/cmake/help/latest/command/execute_process.html
     execute_process(
-        COMMAND             "./configure"
-        COMMAND             "make"
+        COMMAND             bash "-c" "./configure && make"
         WORKING_DIRECTORY   ${bcm2835_SOURCE_DIR}
         RESULT_VARIABLE     bcm2835_RESULT
     )
-    message(NOTICE "-- Build bcm2835 complete! execute result: ${bcm2835_RESULT}.")
+    message(NOTICE "-- Build bcm2835 complete! Result code: ${bcm2835_RESULT}")
 endif()
 
 # https://cmake.org/cmake/help/latest/guide/importing-exporting/index.html

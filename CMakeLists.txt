@@ -27,7 +27,7 @@ add_library(hardware STATIC
 )
 
 # https://cmake.org/cmake/help/latest/command/target_link_libraries.html#libraries-for-a-target-and-or-its-dependents
-target_link_libraries(hardware
+target_link_libraries(hardware PRIVATE
     bcm2835
 )
 
