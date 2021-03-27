@@ -14,8 +14,9 @@ include_directories(${PROJECT_SOURCE_DIR}/include/)
 
 include(${PROJECT_SOURCE_DIR}/lib/bcm2835.cmake)
 
-add_library(gui STATIC
-    src/graphics/paint.c
+add_library(support STATIC
+    src/support/logger.c
+    src/support/signal_handler.c
 )
 
 add_library(hardware STATIC
@@ -25,21 +26,20 @@ add_library(hardware STATIC
     src/hardware/SSD1306.c
 )
 
-# https://cmake.org/cmake/help/v3.20/command/target_link_libraries.html#libraries-for-a-target-and-or-its-dependents
-target_link_libraries(hardware INTERFACE
+# https://cmake.org/cmake/help/latest/command/target_link_libraries.html#libraries-for-a-target-and-or-its-dependents
+target_link_libraries(hardware
     bcm2835
 )
 
-add_library(support STATIC
-    src/support/logger.c
-    src/support/signal_handler.c
+add_library(gui STATIC
+    src/graphics/paint.c
 )
 
 add_executable(${BINARY_NAME} src/main.c)
 
-target_link_libraries(${BINARY_NAME} PUBLIC
-    gui
-    hardware
+target_link_libraries(${BINARY_NAME} PRIVATE
     support
+    hardware
+    gui
 )
 
