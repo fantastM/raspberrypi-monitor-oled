@@ -1,6 +1,6 @@
 [Unit]
 Description=Raspberry Pi Monitor Service
-Documentation=https://github.com/fantasticmao/
+Documentation=https://github.com/fantastM/raspberrypi-monitor-oled/
 After=network.target
 
 [Service]
@@ -9,7 +9,8 @@ PIDFile=/run/raspberrypi-monitor.pid
 ExecStart=
 ExecReload=
 ExecStop=
-TimeoutStopSec=5
+Restart=on-failure
+RestartSec=5s
 KillMode=process
 
 [Install]

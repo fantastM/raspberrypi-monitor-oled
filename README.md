@@ -6,6 +6,7 @@
   - [Raspberry Pi 4 Model B](https://www.raspberrypi.org/products/raspberry-pi-4-model-b/)
   - [Fan HAT](https://www.waveshare.com/wiki/Fan_HAT)
 - GPIO C Library
+  - [I²C](https://en.wikipedia.org/wiki/I%C2%B2C)
   - [I2C/SMBus Subsystem — The Linux Kernel documentation](https://www.kernel.org/doc/html/latest/i2c/index.html)
   - [bcm2835](http://www.airspayce.com/mikem/bcm2835/)
 - Datasheet
@@ -21,7 +22,7 @@
 |       \Pin  |Data/Command Interface              |Control Signal          |
 |Bus     \Name|--+--+--+--+--+--------+-------+----+-+-----+---+-------+----+
 |Interface\   |D7|D6|D5|D4|D3|D2      |D1     |D0  |E|R/W# |CS#|D/C#   |RES#|
-+-------------+--+--+--+--+--+--------+-------+----+-+-----+---+-------+----+
++-------------+--+--+--+--+--+--------+-------+----+-------+---+-------+----+
 |3-wire SPI   |Tie LOW       |NC      |SDIN   |SCLK|Tie LOW|CS#|Tie LOW|RES#|
 +-------------+--------------+--------+-------+----+-------+---+-------+----+
 |4-wire SPI   |Tie LOW       |NC      |SDIN   |SCLK|Tie LOW|CS#|D/C#   |RES#|
