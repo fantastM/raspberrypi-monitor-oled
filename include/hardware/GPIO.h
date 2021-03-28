@@ -3,14 +3,17 @@
  * License           : GNU GENERAL PUBLIC LICENSE v3.0
  * Author            : fantasticmao <maomao8017@gmail.com>
  * Date              : 23.03.2021
- * Last Modified Date: 26.03.2021
+ * Last Modified Date: 29.03.2021
  * Last Modified By  : fantasticmao <maomao8017@gmail.com>
  */
 #ifndef __GPIO_H_
 #define __GPIO_H_
 
-#include <signal.h>
+#include <stdbool.h>
 #include <stdint.h>
+
+#define BCM2835_CONSTANTS_URL                                                  \
+  "https://airspayce.com/mikem/bcm2835/group__constants.html"
 
 /**
  * GPIO init
@@ -56,12 +59,12 @@ void gpio_i2c_set_baudrate(uint16_t baudrate);
  * Transfers any number of bytes to the currently selected I2C slave. (as
  * previously set by
  */
-uint8_t gpio_i2c_write(const char *buf, uint16_t len);
+bool gpio_i2c_write(const char *buf, uint32_t len);
 
 /**
  * Transfers any number of bytes from the currently selected I2C slave. (as
  * previously set by
  */
-uint8_t gpio_i2c_read(char *buf, uint16_t len);
+bool gpio_i2c_read(char *buf, uint32_t len);
 
 #endif

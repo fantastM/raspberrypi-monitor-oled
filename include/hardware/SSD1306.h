@@ -3,25 +3,33 @@
  * License           : GNU GENERAL PUBLIC LICENSE v3.0
  * Author            : fantasticmao <maomao8017@gmail.com>
  * Date              : 23.03.2021
- * Last Modified Date: 25.03.2021
+ * Last Modified Date: 29.03.2021
  * Last Modified By  : fantasticmao <maomao8017@gmail.com>
  */
 #ifndef _SSD1306_H_
 #define _SSD1306_H_
 
-#include <stdbool.h>
+#include <stdint.h>
 
 // SSD1306 datasheet #8.1 and #8.1.5 section
-#define SSD1306_SLAVE_ADDRESS_1 0x3C
-#define SSD1306_SLAVE_ADDRESS_2 0x3D
+// MCU I2C Interface
+#define SLAVE_ADDRESS 0x3C
+#define CONTROL_BYTE_WRITE_COMMAND_STREAM 0x00
+#define CONTROL_BYTE_WRITE_DATA_STREAM 0x40
+#define CONTROL_BYTE_WRITE_SINGLE_COMMAND 0x80
+#define CONTROL_BYTE_WRITE_SINGLE_DATA 0xC0
 
 // SSD1306 datasheet #8.7 section
-#define SCREEN_WIDTH 128 // OLED display width, in pixels
-//#define SCREEN_HEIGHT 64 // OLED display height, in pixels
-#define SCREEN_HEIGHT 32 // OLED display height, in pixels
+// Graphic Display Data RAM (GDDRAM)
 #define PAGE_HEIGHT 8
 #define PAGE_LEN (SCREEN_HEIGHT / PAGE_HEIGHT)
 
-bool ssd1306_start_condition();
+uint8_t ssd1306_write_command_stream(uint8_t *buf);
+
+uint8_t ssd1305_write_data_stream(uint8_t *buf);
+
+uint8_t ssd1306_write_single_command(uint8_t command);
+
+uint8_t ssd1306_write_signle_data(uint8_t data);
 
 #endif

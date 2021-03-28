@@ -13,10 +13,15 @@ set(BINARY_NAME raspberrypi-monitor CACHE INTERNAL "NAME of the output binary")
 include_directories(${PROJECT_SOURCE_DIR}/include/)
 
 include(${PROJECT_SOURCE_DIR}/lib/bcm2835.cmake)
+include(${PROJECT_SOURCE_DIR}/lib/sds.cmake)
 
 add_library(support STATIC
     src/support/logger.c
     src/support/signal_handler.c
+)
+
+target_link_libraries(support PRIVATE
+    sds
 )
 
 add_library(hardware STATIC
@@ -29,6 +34,7 @@ add_library(hardware STATIC
 # https://cmake.org/cmake/help/latest/command/target_link_libraries.html#libraries-for-a-target-and-or-its-dependents
 target_link_libraries(hardware PRIVATE
     bcm2835
+    sds
 )
 
 add_library(gui STATIC
