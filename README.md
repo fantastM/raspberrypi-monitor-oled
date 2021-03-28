@@ -13,7 +13,7 @@
   - [SSD1306](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf)
   - [PCA9685](https://cdn-shop.adafruit.com/datasheets/PCA9685.pdf)
 
-## SSD1306 Datasheet
+## Notes in the SSD1306 Datasheet
 
 ### 8.1 - MCU Interface selection
 
@@ -137,8 +137,45 @@ PAGE0    +-+-+-+-+-+.........................................................+-+
 
 ### Command Table
 
-Hex       | Command
---------- | -----------------
-0xA4/0xA5 | Entire Display ON
-0xAE/0xAF | Entire Display ON
+#### Fundamental Command Table
+
+Hex              | Command
+---------------- | ----------------------------
+0x81 + b^^^^^^^^ | Set Contrast Control
+0xA4 / 0xA5      | Entire Display (RESET) ON
+0xA6 / 0xA7      | Set Normal / Inverse Display
+0xAE / 0xAF      | Set Display OFF / ON
+
+#### Addressing Setting Command Table
+
+Hex              | Command
+---------------- | --------------
+0xB0 ~ 0xB7      | Set Page Start
+0x20 + b000000^^ | Set Memory Addressing Mode
+
+#### Hardware Configuration Command Table
+
+Hex              | Command
+---------------- | ----------------------------
+0x40 ~ 0x7F      | Set Display Start Line
+0xA0 / 0xA1      | Set Segment Re-map
+0xA8 + b00^^^^^^ | Set Multiplex Ratio
+0xC0 / 0xC8      | Set COM Output Scan Direction
+0xD3 + b00^^^^^^ | Set Display Offset
+0xDA + b00^^0010 | Set COM Pins Hardware Configuration
+
+#### Timing & Driving Scheme Setting Command Table
+
+Hex              | Command
+---------------- | -----------------------------------------------------
+0xD5 + b^^^^^^^^ | Set Display Clock Divide Ratio / Oscillator Frequency
+0xD9 + b^^^^^^^^ | Set Pre-charge Period
+0xDB + b0^^^0000 | Set VCOMH Deselect Level
+
+
+#### Charge Bump Setting Command Table
+
+Hex              | Command
+---------------- | -------------------
+0x8D + b00010^00 | Charge Pump Setting
 
