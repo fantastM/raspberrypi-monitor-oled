@@ -65,23 +65,80 @@
 4. An acknowledgement signal will be generated after receiving one byte of data, including the slave address and the R/W# bit.
 5. A control byte mainly consists of Co and D/C# bits following by six "0".
     1. **If the Co bit is set as logic "0", the transmission of the following information will contain data bytes only.**
-    2. **If the D/C# bit is set to logic "0", it defines the following data byte as a command. If the D/C# bit is set to logic "1", it defines the following data byte as a data which will be stored at the GDDRAM(Graphic Display Data RAM).**
+    2. **If the D/C# bit is set to logic "0", it defines the following data byte as a command. If the D/C# bit is set to logic "1", it defines the following data byte as a data which will be stored at the GDDRAM (Graphic Display Data RAM).**
 6. Acknowledge bit will be generated after receiving each control byte or data byte.
 7. The write mode will be finished when a stop condition is applied. **The stop condition is established by pulling the SDA in from LOW to HIGH while the SCL stays HIGH.**
 
 Which means, there are all four possible control bytes in the write mode for I2C:
 
+Co  | D/C# | Hex  | Comment              | Address Increment
+--- | ---- | ---- | -------------------- | -----------------
+0   | 0    | 0x00 | Write command stream | No
+0   | 1    | 0x40 | Write data stream    | Yes
+1   | 0    | 0x80 | Write single command | No
+1   | 1    | 0xC0 | Write single data    | Yes
+
+### Graphic Display Data RAM (GDDRAM)
+
+The GDDRAM is a bit mapped static RAM holding the bit pattern to be displayed. The size of the RAM is 128 x 64 bits and the RAM is divided into eight pages, from PAGE0 to PAGE7, which are used for monochrome 128x64 dot matrix display.
+
 ```text
-+--+----+----+--------------------+-----------------+
-|Co|D/C#|Hex |Comment             |Address Increment|
-+--+----+----+--------------------+-----------------+
-|0 |0   |0x00|Write command stream|No               |
-+--+----+-------------------------+-----------------+
-|0 |1   |0x40|Write data stream   |Yes              |
-+--+----+----+--------------------+-----------------+
-|1 |0   |0x80|Write single command|No               |
-+--+----+----+--------------------+-----------------+
-|1 |1   |0xC0|Write single data   |Yes              |
-+--+----+----+--------------------+-----------------+
+      +--------------------------------------------------+
+PAGE0 |                      Page 0                      |
+      +--------------------------------------------------+
+PAGE1 |                      Page 1                      |
+      +--------------------------------------------------+
+PAGE2 |                      Page 2                      |
+      +--------------------------------------------------+
+PAGE3 |                      Page 3                      |
+      +--------------------------------------------------+
+PAGE4 |                      Page 4                      |
+      +--------------------------------------------------+
+PAGE5 |                      Page 5                      |
+      +--------------------------------------------------+
+PAGE6 |                      Page 6                      |
+      +--------------------------------------------------+
+PAGE7 |                      Page 7                      |
+      +--------------------------------------------------+
+         SEG0 ---------------------------------> SEG127
+
+              GDDRAM pages structure of SSD1306
 ```
+
+When one data byte is written into GDDRAM, all the rows image data of the same page of the current column are filled. Data bit D0 is written into the top row, while data bit D7 is written into bottom row.
+
+```text
+                                                                              S S S S S
+                                                                              E E E E E
+          S S S S S                                                           G G G G G
+          E E E E E                                                           1 1 1 1 1
+          G G G G G                                                           2 2 2 2 2
+          0 1 2 3 4                                                           3 4 5 6 7
+         +-+-+-+-+-+.........................................................+-+-+-+-+-+
+      D0 | | | | | |                                                         | | | | | |
+         +-+-+-+-+-+                                                         +-+-+-+-+-+
+      D1 | | | | | |                                                         | | | | | |
+         +-+-+-+-+-+                                                         +-+-+-+-+-+
+      D2 | | | | | |                                                         | | | | | |
+         +-+-+-+-+-+                                                         +-+-+-+-+-+
+      D3 | | | | | |                                                         | | | | | |
+PAGE0    +-+-+-+-+-+.........................................................+-+-+-+-+-+
+      D4 | | | | | |                                                         | | | | | |
+         +-+-+-+-+-+                                                         +-+-+-+-+-+
+      D5 | | | | | |                                                         | | | | | |
+         +-+-+-+-+-+                                                         +-+-+-+-+-+
+      D6 | | | | | |                                                         | | | | | |
+         +-+-+-+-+-+                                                         +-+-+-+-+-+
+      D7 | | | | | |                                                         | | | | | |
+         +-+-+-+-+-+.........................................................+-+-+-+-+-+
+
+                                      Enlargement of GDDRAM
+```
+
+### Command Table
+
+Hex       | Command
+--------- | -----------------
+0xA4/0xA5 | Entire Display ON
+0xAE/0xAF | Entire Display ON
 
