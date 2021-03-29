@@ -78,7 +78,7 @@ Co  | D/C# | Hex  | Comment              | Address Increment
 1   | 0    | 0x80 | Write single command | No
 1   | 1    | 0xC0 | Write single data    | Yes
 
-### Graphic Display Data RAM (GDDRAM)
+### 8.7 - Graphic Display Data RAM (GDDRAM)
 
 The GDDRAM is a bit mapped static RAM holding the bit pattern to be displayed. The size of the RAM is 128 x 64 bits and the RAM is divided into eight pages, from PAGE0 to PAGE7, which are used for monochrome 128x64 dot matrix display.
 
@@ -135,7 +135,7 @@ PAGE0    +-+-+-+-+-+.........................................................+-+
                                       Enlargement of GDDRAM
 ```
 
-### Command Table
+### 9 - Command Table
 
 #### Fundamental Command Table
 
@@ -172,6 +172,7 @@ Hex              | Command
 0xD9 + b^^^^^^^^ | Set Pre-charge Period
 0xDB + b0^^^0000 | Set VCOMH Deselect Level
 
+### Software Configuration
 
 #### Charge Bump Setting Command Table
 
@@ -179,3 +180,49 @@ Hex              | Command
 ---------------- | -------------------
 0x8D + b00010^00 | Charge Pump Setting
 
+#### Software Configuration
+
+Below is an example of initialization flow of SSD1306.
+
+```text
+                                           +-------------+
+                                           |             |
++-------------+                            |       +--------------------+
+|Set MUX Ratio|                            |       |Set Contrast Control|
+|0xA8 + 0x3F  |                            |       |0x81 + 0x7F         |
++-------------+                            |       +--------------------+
+      |                                    |             |
+      v                                    |             v
++------------------+                       |       +-------------------------+
+|Set Display Offset|                       |       |Disable Entire Display On|
+|0xD3 + 0x00       |                       |       |0xA4                     |
++------------------+                       |       +-------------------------+
+      |                                    |             |
+      v                                    |             v
++----------------------+                   |       +------------------+
+|Set Display Start Line|                   |       |Set Normal Display|
+|0x40                  |                   |       |0xA6              |
++----------------------+                   |       +------------------+
+      |                                    |             |
+      v                                    |             v
++------------------+                       |       +-----------------+
+|Set Segment re-map|                       |       |Set Osc Frequency|
+|0xA0 / 0xA1       |                       |       |0xD5 + 0x80      |
++------------------+                       |       +-----------------+
+      |                                    |             |
+      v                                    |             v
++-----------------------------+            |       +----------------------------+
+|Set COM Output Scan Direction|            |       |Enable charge pump regulator|
+|0xC0 / 0xC8                  |            |       |0x8D + 0x14                 |
++-----------------------------+            |       +----------------------------+
+      |                                    |             |
+      v                                    |             v
++-----------------------------------+      |       +----------+
+|Set COM Pins hardware configuration|      |       |Display On|
+|0xDA + 0x02                        |      |       |0xAF      |
++-----------------------------------+      |       +----------+
+      |                                    |
+      +------------------------------------+
+
+                    Software Initialization Flow Chart
+```
