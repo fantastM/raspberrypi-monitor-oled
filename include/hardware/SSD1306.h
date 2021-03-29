@@ -22,11 +22,10 @@
 // SSD1306 datasheet #8.7 section
 // Graphic Display Data RAM (GDDRAM)
 #define PAGE_HEIGHT 8
-#define PAGE_LEN (SCREEN_HEIGHT / PAGE_HEIGHT)
 
-uint8_t ssd1306_write_command_stream(uint8_t *buf);
+uint8_t ssd1306_write_command_stream(uint8_t command[], uint16_t len);
 
-uint8_t ssd1305_write_data_stream(uint8_t *buf);
+uint8_t ssd1306_write_data_stream(uint8_t data[], uint16_t len);
 
 uint8_t ssd1306_write_single_command(uint8_t command);
 

@@ -64,7 +64,15 @@ void gpio_i2c_set_baudrate(uint16_t baudrate) {
 }
 
 bool gpio_i2c_write(const char *buf, uint32_t len) {
-  log_debug("GPIO I2C write sth, len: %d\n", len);
+  if (len == 2) {
+    log_debug("GPIO I2C write [0x%X, 0x%X], len: %d\n", buf[0], buf[1], len);
+  } else if (len == 3) {
+    log_debug("GPIO I2C write [0x%X, 0x%X, 0x%X], len: %d\n", buf[0], buf[1],
+              buf[2], len);
+  } else {
+    log_debug("GPIO I2C write sth, len: %d\n", len);
+  }
+
   bcm2835I2CReasonCodes code = bcm2835_i2c_write(buf, len);
   if (code != BCM2835_I2C_REASON_OK) {
     log_error("GPIO I2C write error, bcm2835I2CReasonCodes: %d. Read the "

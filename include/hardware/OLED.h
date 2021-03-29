@@ -9,14 +9,18 @@
 #ifndef __OLED_H_
 #define __OLED_H_
 
+#include "SSD1306.h"
+#include "graphics/paint.h"
 #include <stdbool.h>
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 32 // OLED display height, in pixels
 
+#define PAGE_LEN (SCREEN_HEIGHT / PAGE_HEIGHT)
+
 bool oled_turn_on(void);
 
-bool oled_display(void);
+bool oled_display(screen buf);
 
 void oled_turn_off(void);
 

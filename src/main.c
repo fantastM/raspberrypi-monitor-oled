@@ -6,6 +6,7 @@
  * Last Modified Date: 29.03.2021
  * Last Modified By  : fantasticmao <maomao8017@gmail.com>
  */
+#include "graphics/paint.h"
 #include "hardware/OLED.h"
 #include "support/logger.h"
 #include "support/signal_handler.h"
@@ -22,10 +23,16 @@ int main(int argc, char *argv[]) {
   signal(SIGINT, quit);
 
   oled_turn_on();
-  oled_turn_off();
 
-  /*for (;;) {*/
-  /*sleep(1);*/
-  /*}*/
+  struct image *img = newimg(SCREEN_WIDTH, SCREEN_HEIGHT);
+  for (int i = 0; i < SCREEN_WIDTH * PAGE_LEN; i++) {
+    *img->buf = 0x18;
+  }
+  screen screen = img_crop(img, 0);
+  oled_display(screen);
+
+  for (;;) {
+    sleep(1);
+  }
   return 0;
 }
