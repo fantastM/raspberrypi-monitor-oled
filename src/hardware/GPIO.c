@@ -3,12 +3,11 @@
  * License           : GNU GENERAL PUBLIC LICENSE v3.0
  * Author            : fantasticmao <maomao8017@gmail.com>
  * Date              : 23.03.2021
- * Last Modified Date: 29.03.2021
+ * Last Modified Date: 30.03.2021
  * Last Modified By  : fantasticmao <maomao8017@gmail.com>
  */
 #include "hardware/GPIO.h"
 #include "support/logger.h"
-#include "support/signal_handler.h"
 #include <bcm2835.h>
 #include <signal.h>
 #include <stdint.h>
@@ -18,7 +17,7 @@ int gpio_init() {
   int r;
   if (!(r = bcm2835_init())) {
     log_error("GPIO init failed. Are you running as root?\n");
-    quit(SIGTERM);
+    raise(SIGTERM);
   }
   return r;
 }
@@ -28,7 +27,7 @@ int gpio_close() {
   int r;
   if (!(r = bcm2835_close())) {
     log_error("GPIO close failed.\n");
-    quit(SIGTERM);
+    raise(SIGTERM);
   }
   return r;
 }
@@ -38,7 +37,7 @@ int gpio_i2c_begin() {
   int r;
   if (!(r = bcm2835_i2c_begin())) {
     log_error("GPIO I2C begin failed. Are you running as root?\n");
-    quit(SIGTERM);
+    raise(SIGTERM);
   }
   return r;
 }
@@ -69,6 +68,9 @@ bool gpio_i2c_write(const char *buf, uint32_t len) {
   } else if (len == 3) {
     log_debug("GPIO I2C write [0x%X, 0x%X, 0x%X], len: %d\n", buf[0], buf[1],
               buf[2], len);
+  } else if (len == 4) {
+    log_debug("GPIO I2C write [0x%X, 0x%X, 0x%X, 0x%x], len: %d\n", buf[0],
+              buf[1], buf[2], buf[3], len);
   } else {
     log_debug("GPIO I2C write sth, len: %d\n", len);
   }
@@ -84,7 +86,7 @@ bool gpio_i2c_write(const char *buf, uint32_t len) {
 }
 
 bool gpio_i2c_read(char *buf, uint32_t len) {
-  log_debug("GPIO I2C rea\n");
+  log_debug("GPIO I2C read\n");
   bcm2835I2CReasonCodes code = bcm2835_i2c_read(buf, len);
   if (code != BCM2835_I2C_REASON_OK) {
     log_error("GPIO I2C read error, bcm2835I2CReasonCodes: %d. Read the "

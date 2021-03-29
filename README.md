@@ -148,12 +148,11 @@ Hex              | Command
 
 #### Addressing Setting Command Table
 
-Hex              | Command
----------------- | --------------------------------------------------------
-0x00 ~ 0x0F      | Set Lower Column Start Address for Page Addressing Mode
-0x10 ~ 0x1F      | Set Higher Column Start Address for Page Addressing Mode
-0x20 + b000000^^ | Set Memory Addressing Mode
-0xB0 ~ 0xB7      | Set Page Start Address for Page Addressing Mode
+Hex                          | Command
+---------------------------- | ----------------------------------------------------------------
+0x20 + b000000^^             | Set Memory Addressing Mode (will use **Horizontal Addressing Mode**)
+0x21 + b0^^^^^^^ + b0^^^^^^^ | Set Column Address
+0x22 + b00000^^^ + b00000^^^ | Set Page Address
 
 #### Hardware Configuration Command Table
 

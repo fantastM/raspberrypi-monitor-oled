@@ -9,6 +9,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 set(BINARY_NAME raspberrypi-monitor CACHE INTERNAL "NAME of the output binary")
+set(BINARY_TEST_NAME raspberrypi-monitor-test CACHE INTERNAL "NAME of the owl test binary")
 
 include_directories(${PROJECT_SOURCE_DIR}/include/)
 
@@ -49,3 +50,10 @@ target_link_libraries(${BINARY_NAME} PRIVATE
     gui
 )
 
+add_executable(${BINARY_TEST_NAME} examples/owl.c)
+
+target_link_libraries(${BINARY_TEST_NAME} PRIVATE
+    support
+    hardware
+    gui
+)

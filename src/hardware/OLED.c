@@ -3,7 +3,7 @@
  * License           : GNU GENERAL PUBLIC LICENSE v3.0
  * Author            : fantasticmao <maomao8017@gmail.com>
  * Date              : 24.03.2021
- * Last Modified Date: 29.03.2021
+ * Last Modified Date: 30.03.2021
  * Last Modified By  : fantasticmao <maomao8017@gmail.com>
  */
 #include "hardware/OLED.h"
@@ -35,10 +35,10 @@ bool oled_turn_on() {
   ssd1306_write_single_command(0x40);
 
   log_debug("OLED -- Set Segment re-map\n");
-  ssd1306_write_single_command(0xA1);
+  ssd1306_write_single_command(0xA0);
 
   log_debug("OLED -- Set COM Output Scan Direction\n");
-  ssd1306_write_single_command(0xC8);
+  ssd1306_write_single_command(0xC0);
 
   command[0] = 0xDA;
   command[1] = 0x02;
@@ -71,16 +71,34 @@ bool oled_turn_on() {
   return true;
 }
 
-bool oled_display(screen screen) {
-  log_info("OLED -- Rendering sreen\n");
-  ssd1306_write_single_command(0x00);
-  ssd1306_write_single_command(0x10);
-  ssd1306_write_data_stream(screen, 128 * 32);
+bool oled_display(const uint8_t *buf) {
+  uint8_t command[3];
+  command[0] = 0x20;
+  command[1] = 0x00;
+  log_debug("OLED -- Set Memory Addressing Mode\n");
+  ssd1306_write_command_stream(command, 2);
+
+  command[0] = 0x21;
+  command[1] = 0x00;
+  command[2] = SCREEN_WIDTH - 1;
+  log_debug("OLED -- Set Column Address\n");
+  ssd1306_write_command_stream(command, 3);
+
+  command[0] = 0x22;
+  command[1] = 0x00;
+  command[2] = PAGE_NUM - 1;
+  log_debug("OLED -- Set Page Address\n");
+  ssd1306_write_command_stream(command, 3);
+
+  log_debug("OLED -- Rendering sreen\n");
+  ssd1306_write_data_stream(buf, SCREEN_WIDTH * PAGE_NUM);
   return true;
 }
 
 void oled_turn_off() {
-  ssd1306_write_single_command(0xAE); // Display OFF
+  log_debug("OLED -- Display Off\n");
+  ssd1306_write_single_command(0xAE);
+
   gpio_i2c_end();
   gpio_close();
 }
