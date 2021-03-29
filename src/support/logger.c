@@ -11,16 +11,16 @@
 #include <stdarg.h>
 #include <stdio.h>
 
+static void log_msg(const char *prefix, FILE *stream, const char *msg,
+                    va_list args);
+
 extern bool DEBUG_MODE;
 
 void log_info(const char *msg, ...) {
   va_list args;
   va_start(args, msg);
 
-  sds msg_sds = sdsnew("[ INFO] ");
-  msg_sds = sdscat(msg_sds, msg);
-  vprintf(msg_sds, args);
-  sdsfree(msg_sds);
+  log_msg("[ INFO] ", stdout, msg, args);
 
   va_end(args);
 }
@@ -33,10 +33,7 @@ void log_debug(const char *msg, ...) {
   va_list args;
   va_start(args, msg);
 
-  sds msg_sds = sdsnew("[DEBUG] ");
-  msg_sds = sdscat(msg_sds, msg);
-  vprintf(msg_sds, args);
-  sdsfree(msg_sds);
+  log_msg("[DEBUG] ", stdout, msg, args);
 
   va_end(args);
 }
@@ -45,10 +42,15 @@ void log_error(const char *msg, ...) {
   va_list args;
   va_start(args, msg);
 
-  sds msg_sds = sdsnew("[ERROR] ");
-  msg_sds = sdscat(msg_sds, msg);
-  vfprintf(stderr, msg_sds, args);
-  sdsfree(msg_sds);
+  log_msg("[ERROR] ", stderr, msg, args);
 
   va_end(args);
+}
+
+static void log_msg(const char *prefix, FILE *stream, const char *msg,
+                    va_list args) {
+  sds msg_sds = sdsnew(prefix);
+  msg_sds = sdscat(msg_sds, msg);
+  vfprintf(stream, msg_sds, args);
+  sdsfree(msg_sds);
 }
