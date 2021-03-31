@@ -3,11 +3,12 @@
  * License           : GNU GENERAL PUBLIC LICENSE v3.0
  * Author            : fantasticmao <maomao8017@gmail.com>
  * Date              : 30.03.2021
- * Last Modified Date: 31.03.2021
+ * Last Modified Date: 01.04.2021
  * Last Modified By  : fantasticmao <maomao8017@gmail.com>
  */
 #include "graphics/paint.h"
 #include "hardware/OLED.h"
+#include "hardware/SSD1306.h"
 #include "support/logger.h"
 #include "support/signal_handler.h"
 #include <signal.h>
@@ -123,14 +124,20 @@ int main(int argc, char *argv[]) {
 
   oled_turn_on();
 
-  const uint8_t screen_width = SCREEN_WIDTH_PX;
-  const uint8_t img_page_num = (sizeof data / sizeof data[0]) / screen_width;
-  const uint8_t img_page_num_overflow = img_page_num - SCREEN_PAGE_NUM; // 8 - 4
+  const uint16_t data_bytes = sizeof data * sizeof data[0];
+  const uint8_t img_pages = data_bytes / SCREEN_WIDTH_PX;
+  const uint8_t img_pages_overflow = img_pages - SCREEN_PAGE_NUM; // 8 - 4
 
+  const struct font non_text = {0, 0};
+  const struct image *img = newimg(SCREEN_WIDTH_PX, img_pages * PAGE_HEIGHT_PX,
+                                   &non_text, data, data_bytes);
+
+  // scroll loop
   for (int i = 0, down = true;;) {
-    oled_display(&data[i * screen_width]);
+    screen screen = cropimg(img, i);
+    oled_display(screen);
     i = i + (down ? 1 : -1);
-    if (i >= img_page_num_overflow || i <= 0) {
+    if (i >= img_pages_overflow || i <= 0) {
       down = !down;
     }
     sleep(1);
