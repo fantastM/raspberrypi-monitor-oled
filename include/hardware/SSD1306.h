@@ -3,7 +3,7 @@
  * License           : GNU GENERAL PUBLIC LICENSE v3.0
  * Author            : fantasticmao <maomao8017@gmail.com>
  * Date              : 23.03.2021
- * Last Modified Date: 30.03.2021
+ * Last Modified Date: 31.03.2021
  * Last Modified By  : fantasticmao <maomao8017@gmail.com>
  */
 #ifndef _SSD1306_H_
@@ -21,7 +21,7 @@
 
 // SSD1306 datasheet #8.7 section
 // Graphic Display Data RAM (GDDRAM)
-#define PAGE_HEIGHT 8
+#define PAGE_HEIGHT_PX 8
 
 uint8_t ssd1306_write_command_stream(const uint8_t command[],
                                      const uint16_t len);

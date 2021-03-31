@@ -14,6 +14,7 @@ set(BINARY_TEST_NAME raspberrypi-monitor-test CACHE INTERNAL "NAME of the owl te
 include_directories(${PROJECT_SOURCE_DIR}/include/)
 
 include(${PROJECT_SOURCE_DIR}/lib/bcm2835.cmake)
+include(${PROJECT_SOURCE_DIR}/lib/font8_8.cmake)
 include(${PROJECT_SOURCE_DIR}/lib/sds.cmake)
 
 add_library(support STATIC

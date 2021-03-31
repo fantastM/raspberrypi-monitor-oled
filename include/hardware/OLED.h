@@ -3,7 +3,7 @@
  * License           : GNU GENERAL PUBLIC LICENSE v3.0
  * Author            : fantasticmao <maomao8017@gmail.com>
  * Date              : 23.03.2021
- * Last Modified Date: 30.03.2021
+ * Last Modified Date: 31.03.2021
  * Last Modified By  : fantasticmao <maomao8017@gmail.com>
  */
 #ifndef __OLED_H_
@@ -13,10 +13,9 @@
 #include "graphics/paint.h"
 #include <stdbool.h>
 
-#define SCREEN_WIDTH 128 // OLED display width, in pixels
-#define SCREEN_HEIGHT 32 // OLED display height, in pixels
-
-#define PAGE_NUM (SCREEN_HEIGHT / PAGE_HEIGHT)
+#define SCREEN_WIDTH_PX 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT_PX 32 // OLED display height, in pixels
+#define SCREEN_PAGE_NUM (SCREEN_HEIGHT_PX / PAGE_HEIGHT_PX)
 
 bool oled_turn_on(void);
 

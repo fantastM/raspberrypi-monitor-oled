@@ -3,7 +3,7 @@
  * License           : GNU GENERAL PUBLIC LICENSE v3.0
  * Author            : fantasticmao <maomao8017@gmail.com>
  * Date              : 24.03.2021
- * Last Modified Date: 30.03.2021
+ * Last Modified Date: 31.03.2021
  * Last Modified By  : fantasticmao <maomao8017@gmail.com>
  */
 #include "hardware/OLED.h"
@@ -80,18 +80,18 @@ bool oled_display(const uint8_t *buf) {
 
   command[0] = 0x21;
   command[1] = 0x00;
-  command[2] = SCREEN_WIDTH - 1;
+  command[2] = SCREEN_WIDTH_PX - 1;
   log_debug("OLED -- Set Column Address\n");
   ssd1306_write_command_stream(command, 3);
 
   command[0] = 0x22;
   command[1] = 0x00;
-  command[2] = PAGE_NUM - 1;
+  command[2] = SCREEN_PAGE_NUM - 1;
   log_debug("OLED -- Set Page Address\n");
   ssd1306_write_command_stream(command, 3);
 
   log_debug("OLED -- Rendering sreen\n");
-  ssd1306_write_data_stream(buf, SCREEN_WIDTH * PAGE_NUM);
+  ssd1306_write_data_stream(buf, SCREEN_WIDTH_PX * SCREEN_PAGE_NUM);
   return true;
 }
 

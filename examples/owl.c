@@ -3,7 +3,7 @@
  * License           : GNU GENERAL PUBLIC LICENSE v3.0
  * Author            : fantasticmao <maomao8017@gmail.com>
  * Date              : 30.03.2021
- * Last Modified Date: 30.03.2021
+ * Last Modified Date: 31.03.2021
  * Last Modified By  : fantasticmao <maomao8017@gmail.com>
  */
 #include "graphics/paint.h"
@@ -19,7 +19,8 @@ bool DEBUG_MODE = false;
 
 int main(int argc, char *argv[]) {
   const uint8_t data[] = {
-      // 128 * 64
+      // 128 px * 64 px
+      // 128 px * 8 page
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -122,15 +123,14 @@ int main(int argc, char *argv[]) {
 
   oled_turn_on();
 
-  const uint8_t width = 128;
-  const uint8_t height = 64;
-  const uint8_t page_num = height / PAGE_HEIGHT;
-  const uint8_t page_half_num = page_num / 2; // 4
+  const uint8_t screen_width = SCREEN_WIDTH_PX;
+  const uint8_t img_page_num = (sizeof data / sizeof data[0]) / screen_width;
+  const uint8_t img_page_num_overflow = img_page_num - SCREEN_PAGE_NUM; // 8 - 4
 
   for (int i = 0, down = true;;) {
-    oled_display(&data[i * width]);
+    oled_display(&data[i * screen_width]);
     i = i + (down ? 1 : -1);
-    if (i >= page_half_num || i <= 0) {
+    if (i >= img_page_num_overflow || i <= 0) {
       down = !down;
     }
     sleep(1);
