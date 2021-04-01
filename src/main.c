@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
                  "CCCCCCCCCCCCCCCC"};
   struct font font8_8 = {8, 8};
   struct image *img = newimg(SCREEN_WIDTH_PX, SCREEN_HEIGHT_PX, &font8_8, text,
-                             sizeof text / sizeof text[0]);
+                             sizeof text / sizeof text[0] - 1);
   screen screen = cropimg(img, 0);
   oled_display(screen);
 

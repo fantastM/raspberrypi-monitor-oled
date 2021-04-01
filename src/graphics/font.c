@@ -19,4 +19,4 @@ fontbuf char_to_fontbuf(const char c) {
   return (fontbuf)font8x8_basic[c];
 }
 
-uint8_t rotate_fontbuf(const fontbuf fontbuf) { return NULL; }
+fontbuf rotate_fontbuf(const fontbuf fontbuf) { return NULL; }

@@ -26,6 +26,15 @@ target_link_libraries(support PRIVATE
     sds
 )
 
+add_library(gui STATIC
+    src/graphics/font.c
+    src/graphics/paint.c
+)
+
+target_link_libraries(gui PRIVATE
+    font8_8
+)
+
 add_library(hardware STATIC
     src/hardware/GPIO.c
     src/hardware/OLED.c
@@ -39,22 +48,18 @@ target_link_libraries(hardware PRIVATE
     sds
 )
 
-add_library(gui STATIC
-    src/graphics/paint.c
-)
-
 add_executable(${BINARY_NAME} src/main.c)
 
 target_link_libraries(${BINARY_NAME} PRIVATE
     support
-    hardware
     gui
+    hardware
 )
 
 add_executable(${BINARY_TEST_NAME} examples/owl.c)
 
 target_link_libraries(${BINARY_TEST_NAME} PRIVATE
     support
-    hardware
     gui
+    hardware
 )

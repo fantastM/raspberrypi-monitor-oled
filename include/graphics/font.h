@@ -20,6 +20,6 @@ struct font {
 
 fontbuf char_to_fontbuf(const char c);
 
-uint8_t rotate_fontbuf(const fontbuf fontbuf);
+fontbuf rotate_fontbuf(const fontbuf fontbuf);
 
 #endif

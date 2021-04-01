@@ -11,28 +11,36 @@
 #include <string.h>
 
 struct image *newimg(const uint8_t width_px, const uint8_t height_px,
-                     const struct font *font, const uint8_t *text,
-                     const uint16_t text_bytes) {
+                     const struct font *font, const char *data,
+                     const uint16_t data_bytes) {
   // init image
   struct image *img = (struct image *)malloc(sizeof(struct image));
   img->width_px = width_px;
   img->height_px = height_px;
-  uint16_t area_px = img->width_px * img->height_px;
-  uint16_t area_bytes = area_px / sizeof(uint8_t);
+  const uint16_t area_px = img->width_px * img->height_px;
+  const uint16_t area_bytes = area_px / 8;
   img->buf = (uint8_t *)calloc(area_bytes, sizeof(uint8_t));
 
   // fill image buffer
   if (font->width_px <= 0 || font->height_px <= 0) { // non-text content
-    if (text_bytes < area_bytes) {
-      memcpy(img->buf, text, text_bytes);
-      memset(img->buf + text_bytes, 0x00, area_bytes - text_bytes);
-    } else {
-      memcpy(img->buf, text, area_bytes);
-    }
+    const uint16_t data_newbytes =
+        (data_bytes < area_bytes) ? data_bytes : area_bytes;
+    memcpy(img->buf, (uint8_t *)data, data_newbytes);
+    memset(img->buf + data_bytes, 0x00, area_bytes - data_newbytes);
   } else { // text content
-    uint16_t img_char_num =
-        (img->width_px / font->width_px) * (img->height_px / font->height_px);
-    // TODO
+    const uint16_t area_fonts = area_bytes / font->height_px;
+    const uint16_t text_fonts =
+        (data_bytes < area_fonts) ? data_bytes : area_fonts;
+    uint8_t *imgbuf = img->buf;
+    for (int i = 0; i < text_fonts; i++) {
+      fontbuf buf = char_to_fontbuf('c');
+      buf = rotate_fontbuf(buf);
+      // 'A' bitmap
+      uint8_t a[] = {0x00, 0x00, 0x7C, 0x7E, 0x13, 0x13, 0x7E, 0x7C};
+      memcpy(imgbuf, a, font->height_px);
+      imgbuf += font->height_px;
+    }
+    memset(imgbuf, 0x00, area_fonts - text_fonts);
   }
   return img;
 }

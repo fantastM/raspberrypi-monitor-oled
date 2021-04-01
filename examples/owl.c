@@ -19,7 +19,7 @@
 bool DEBUG_MODE = false;
 
 int main(int argc, char *argv[]) {
-  const uint8_t data[] = {
+  const char data[] = {
       // 128 px * 64 px
       // 128 px * 8 page
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,

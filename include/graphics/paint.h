@@ -21,8 +21,8 @@ struct image {
 };
 
 struct image *newimg(const uint8_t width_px, const uint8_t height_px,
-                     const struct font *font, const uint8_t text[],
-                     const uint16_t text_bytes);
+                     const struct font *font, const char data[],
+                     const uint16_t data_bytes);
 
 void freeimg(struct image *img);
 
