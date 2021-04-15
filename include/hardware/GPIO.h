@@ -12,7 +12,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define BCM2835_CONSTANTS_URL                                                  \
+#define BCM2835_CONSTANTS_URL \
   "https://airspayce.com/mikem/bcm2835/group__constants.html"
 
 /**

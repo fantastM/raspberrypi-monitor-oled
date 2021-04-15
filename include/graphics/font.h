@@ -18,6 +18,6 @@ struct font {
   uint8_t height_px;
 };
 
-fontbuf char_to_fontbuf(const char c);
+fontbuf char_to_fontbuf(char c);
 
 #endif

@@ -6,15 +6,16 @@
  * Last Modified Date: 02.04.2021
  * Last Modified By  : fantasticmao <maomao8017@gmail.com>
  */
+#include <signal.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <unistd.h>
+
 #include "graphics/paint.h"
 #include "hardware/OLED.h"
 #include "hardware/SSD1306.h"
 #include "support/logger.h"
 #include "support/signal_handler.h"
-#include <signal.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <unistd.h>
 
 bool DEBUG_MODE = false;
 
@@ -126,7 +127,7 @@ int main(int argc, char *argv[]) {
 
   const uint16_t data_bytes = sizeof data / sizeof data[0];
   const uint8_t img_pages = data_bytes / SCREEN_WIDTH_PX;
-  const uint8_t img_pages_overflow = img_pages - SCREEN_PAGE_NUM; // 8 - 4
+  const uint8_t img_pages_overflow = img_pages - SCREEN_PAGE_NUM;  // 8 - 4
 
   const struct image *img = newimg_buffer(
       SCREEN_WIDTH_PX, img_pages * PAGE_HEIGHT_PX, data, data_bytes);
@@ -141,5 +142,4 @@ int main(int argc, char *argv[]) {
     }
     sleep(1);
   }
-  return 1;
 }

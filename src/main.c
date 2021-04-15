@@ -6,14 +6,15 @@
  * Last Modified Date: 06.04.2021
  * Last Modified By  : fantasticmao <maomao8017@gmail.com>
  */
+#include <signal.h>
+#include <stdbool.h>
+#include <unistd.h>
+
 #include "graphics/font.h"
 #include "graphics/paint.h"
 #include "hardware/OLED.h"
 #include "support/logger.h"
 #include "support/signal_handler.h"
-#include <signal.h>
-#include <stdbool.h>
-#include <unistd.h>
 
 bool DEBUG_MODE = false;
 
@@ -36,5 +37,4 @@ int main(int argc, char *argv[]) {
   for (;;) {
     sleep(1);
   }
-  return 0;
 }

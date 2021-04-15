@@ -6,10 +6,11 @@
  * Last Modified Date: 31.03.2021
  * Last Modified By  : fantasticmao <maomao8017@gmail.com>
  */
-#include "support/logger.h"
 #include <hardware/GPIO.h>
 #include <hardware/SSD1306.h>
 #include <string.h>
+
+#include "support/logger.h"
 
 uint8_t ssd1306_write_command_stream(const uint8_t *command,
                                      const uint16_t len) {

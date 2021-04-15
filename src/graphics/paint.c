@@ -7,6 +7,7 @@
  * Last Modified By  : fantasticmao <maomao8017@gmail.com>
  */
 #include "graphics/paint.h"
+
 #include <stdlib.h>
 #include <string.h>
 

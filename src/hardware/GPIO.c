@@ -7,10 +7,12 @@
  * Last Modified By  : fantasticmao <maomao8017@gmail.com>
  */
 #include "hardware/GPIO.h"
-#include "support/logger.h"
+
 #include <bcm2835.h>
 #include <signal.h>
 #include <stdint.h>
+
+#include "support/logger.h"
 
 int gpio_init() {
   log_debug("GPIO init\n");
@@ -77,9 +79,10 @@ bool gpio_i2c_write(const char *buf, uint32_t len) {
 
   bcm2835I2CReasonCodes code = bcm2835_i2c_write(buf, len);
   if (code != BCM2835_I2C_REASON_OK) {
-    log_error("GPIO I2C write error, bcm2835I2CReasonCodes: %d. Read the "
-              "bcm2835 document for more details: \n\t%s\n",
-              code, BCM2835_CONSTANTS_URL);
+    log_error(
+        "GPIO I2C write error, bcm2835I2CReasonCodes: %d. Read the "
+        "bcm2835 document for more details: \n\t%s\n",
+        code, BCM2835_CONSTANTS_URL);
     return false;
   }
   return true;
@@ -89,9 +92,10 @@ bool gpio_i2c_read(char *buf, uint32_t len) {
   log_debug("GPIO I2C read\n");
   bcm2835I2CReasonCodes code = bcm2835_i2c_read(buf, len);
   if (code != BCM2835_I2C_REASON_OK) {
-    log_error("GPIO I2C read error, bcm2835I2CReasonCodes: %d. Read the "
-              "bcm2835 document for more details: \n\t%s\n",
-              code, BCM2835_CONSTANTS_URL);
+    log_error(
+        "GPIO I2C read error, bcm2835I2CReasonCodes: %d. Read the "
+        "bcm2835 document for more details: \n\t%s\n",
+        code, BCM2835_CONSTANTS_URL);
     return false;
   }
   return true;

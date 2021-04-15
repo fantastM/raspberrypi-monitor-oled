@@ -7,10 +7,12 @@
  * Last Modified By  : fantasticmao <maomao8017@gmail.com>
  */
 #include "hardware/OLED.h"
+
+#include <stdbool.h>
+
 #include "hardware/GPIO.h"
 #include "hardware/SSD1306.h"
 #include "support/logger.h"
-#include <stdbool.h>
 
 bool oled_turn_on() {
   if (!gpio_init()) {

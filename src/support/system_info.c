@@ -7,13 +7,15 @@
  * Last Modified By  : fantasticmao <maomao8017@gmail.com>
  */
 #include "support/system_info.h"
-#include "support/logger.h"
+
 #include <arpa/inet.h>
 #include <ifaddrs.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <sys/socket.h>
+
+#include "support/logger.h"
 
 static bool str_start_with(char *str, char *prefix);
 
@@ -26,18 +28,15 @@ int ip4_address(char *addr_str) {
   }
 
   for (struct ifaddrs *ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next) {
-    if (ifa->ifa_addr == NULL)
-      continue;
+    if (ifa->ifa_addr == NULL) continue;
     // filter non IPv4 family
-    if (ifa->ifa_addr->sa_family != AF_INET)
-      continue;
+    if (ifa->ifa_addr->sa_family != AF_INET) continue;
 
     struct sockaddr_in *sock_addr = (struct sockaddr_in *)ifa->ifa_addr;
     // https://man7.org/linux/man-pages/man3/inet_ntop.3.html
     inet_ntop(AF_INET, &(sock_addr->sin_addr), addr_str, INET_ADDRSTRLEN);
 
-    if (str_start_with(addr_str, "127"))
-      continue;
+    if (str_start_with(addr_str, "127")) continue;
     printf("interface: %s, family: %d, ip: %s\n", ifa->ifa_name,
            ifa->ifa_addr->sa_family, addr_str);
   }

@@ -9,8 +9,9 @@
 #ifndef __PAINT_H_
 #define __PAINT_H_
 
-#include "font.h"
 #include <stdint.h>
+
+#include "font.h"
 
 typedef uint8_t *screen;
 
@@ -20,11 +21,11 @@ struct image {
   uint8_t *buf;
 };
 
-struct image *newimg_buffer(const uint8_t width_px, const uint8_t height_px,
-                            const char data[], const uint16_t data_bytes);
+struct image *newimg_buffer(uint8_t width_px, uint8_t height_px,
+                            const char data[], uint16_t data_bytes);
 
-struct image *newimg_text(const uint8_t width_px, const uint8_t height_px,
-                          const char *text[], const uint8_t text_lines,
+struct image *newimg_text(uint8_t width_px, uint8_t height_px,
+                          const char *text[], uint8_t text_lines,
                           const struct font *font);
 
 void freeimg(struct image *img);
@@ -44,6 +45,6 @@ void freeimg(struct image *img);
  * |   vv   |
  * |        |
  */
-screen cropimg(const struct image *img, const uint8_t start_page);
+screen cropimg(const struct image *img, uint8_t start_page);
 
 #endif

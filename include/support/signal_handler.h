@@ -9,6 +9,6 @@
 #ifndef __SIGNAL_HANDLER_H_
 #define __SIGNAL_HANDLER_H_
 
-void quit(const int signo);
+void quit(int signo);
 
 #endif

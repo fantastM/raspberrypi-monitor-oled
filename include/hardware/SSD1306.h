@@ -23,13 +23,12 @@
 // Graphic Display Data RAM (GDDRAM)
 #define PAGE_HEIGHT_PX 8
 
-uint8_t ssd1306_write_command_stream(const uint8_t command[],
-                                     const uint16_t len);
+uint8_t ssd1306_write_command_stream(const uint8_t command[], uint16_t len);
 
-uint8_t ssd1306_write_data_stream(const uint8_t data[], const uint16_t len);
+uint8_t ssd1306_write_data_stream(const uint8_t data[], uint16_t len);
 
-uint8_t ssd1306_write_single_command(const uint8_t command);
+uint8_t ssd1306_write_single_command(uint8_t command);
 
-uint8_t ssd1306_write_single_data(const uint8_t data);
+uint8_t ssd1306_write_single_data(uint8_t data);
 
 #endif
