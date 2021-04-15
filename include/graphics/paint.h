@@ -3,7 +3,7 @@
  * License           : GNU GENERAL PUBLIC LICENSE v3.0
  * Author            : fantasticmao <maomao8017@gmail.com>
  * Date              : 24.03.2021
- * Last Modified Date: 01.04.2021
+ * Last Modified Date: 02.04.2021
  * Last Modified By  : fantasticmao <maomao8017@gmail.com>
  */
 #ifndef __PAINT_H_
@@ -20,9 +20,12 @@ struct image {
   uint8_t *buf;
 };
 
-struct image *newimg(const uint8_t width_px, const uint8_t height_px,
-                     const struct font *font, const char data[],
-                     const uint16_t data_bytes);
+struct image *newimg_buffer(const uint8_t width_px, const uint8_t height_px,
+                            const char data[], const uint16_t data_bytes);
+
+struct image *newimg_text(const uint8_t width_px, const uint8_t height_px,
+                          const char *text[], const uint8_t text_lines,
+                          const struct font *font);
 
 void freeimg(struct image *img);
 

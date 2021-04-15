@@ -2,9 +2,9 @@ include(FetchContent)
 
 FetchContent_Declare(
     sds
-    GIT_REPOSITORY      https://github.com/antirez/sds
-    SOURCE_SUBDIR       master
-    GIT_SHALLOW         true
+    GIT_REPOSITORY  https://github.com/antirez/sds
+    GIT_TAG         master
+    GIT_SHALLOW     true
 )
 
 if(NOT sds_POPULATED)

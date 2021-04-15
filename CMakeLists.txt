@@ -14,12 +14,13 @@ set(BINARY_TEST_NAME raspberrypi-monitor-test CACHE INTERNAL "NAME of the owl te
 include_directories(${PROJECT_SOURCE_DIR}/include/)
 
 include(${PROJECT_SOURCE_DIR}/lib/bcm2835.cmake)
-include(${PROJECT_SOURCE_DIR}/lib/font8_8.cmake)
+include(${PROJECT_SOURCE_DIR}/lib/font6x8.cmake)
 include(${PROJECT_SOURCE_DIR}/lib/sds.cmake)
 
 add_library(support STATIC
     src/support/logger.c
     src/support/signal_handler.c
+    src/support/system_info.c
 )
 
 target_link_libraries(support PRIVATE
@@ -32,7 +33,7 @@ add_library(gui STATIC
 )
 
 target_link_libraries(gui PRIVATE
-    font8_8
+    font6x8
 )
 
 add_library(hardware STATIC

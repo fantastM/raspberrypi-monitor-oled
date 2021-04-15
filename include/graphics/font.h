@@ -3,7 +3,7 @@
  * License           : GNU GENERAL PUBLIC LICENSE v3.0
  * Author            : fantasticmao <maomao8017@gmail.com>
  * Date              : 31.03.2021
- * Last Modified Date: 01.04.2021
+ * Last Modified Date: 02.04.2021
  * Last Modified By  : fantasticmao <maomao8017@gmail.com>
  */
 #ifndef __FONT_H_
@@ -19,7 +19,5 @@ struct font {
 };
 
 fontbuf char_to_fontbuf(const char c);
-
-fontbuf rotate_fontbuf(const fontbuf fontbuf);
 
 #endif
