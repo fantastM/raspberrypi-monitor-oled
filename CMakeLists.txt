@@ -64,3 +64,9 @@ target_link_libraries(${BINARY_TEST_NAME} PRIVATE
     gui
     hardware
 )
+
+add_executable(system_info_test test/support/system_info_test.c)
+
+target_link_libraries(system_info_test PRIVATE
+    support
+)

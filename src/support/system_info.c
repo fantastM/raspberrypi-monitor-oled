@@ -12,7 +12,6 @@
 #include <ifaddrs.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include <stdio.h>
 #include <sys/socket.h>
 
 #include "support/logger.h"
@@ -36,9 +35,9 @@ int ip4_address(char *addr_str) {
     // https://man7.org/linux/man-pages/man3/inet_ntop.3.html
     inet_ntop(AF_INET, &(sock_addr->sin_addr), addr_str, INET_ADDRSTRLEN);
 
-    if (str_start_with(addr_str, "127")) continue;
-    printf("interface: %s, family: %d, ip: %s\n", ifa->ifa_name,
-           ifa->ifa_addr->sa_family, addr_str);
+    if (!str_start_with(addr_str, "127")) {
+      break;
+    }
   }
 
   freeifaddrs(ifaddr);
