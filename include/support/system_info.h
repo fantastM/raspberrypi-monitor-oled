@@ -9,7 +9,7 @@
 #ifndef __SYSTEM_INFO_H_
 #define __SYSTEM_INFO_H_
 
-float cpu_usage();
+int cpu_usage(unsigned int *core_time, unsigned int *total_time);
 
 float cpu_temp();
 

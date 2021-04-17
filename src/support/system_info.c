@@ -9,20 +9,55 @@
 #include "support/system_info.h"
 
 #include <arpa/inet.h>
+#include <errno.h>
 #include <ifaddrs.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdio.h>
+#include <string.h>
 #include <sys/socket.h>
 
 #include "support/logger.h"
 
 static bool str_start_with(char *str, char *prefix);
 
+int cpu_usage(unsigned int *core_time, unsigned int *total_time) {
+  char *path = "/proc/stat";
+  FILE *file = fopen(path, "r");
+  if (file == NULL) {
+    log_error("SystemInfo: %s \"%s\"\n", strerror(errno), path);
+    return 0;
+  }
+
+  char buff[100];
+  if (fgets(buff, 100, file) == NULL) {
+    log_error("SystemInfo: read file error\"%s\"\n", path);
+    return 0;
+  }
+
+  unsigned int user = 0, nice = 0, system = 0;
+  unsigned int idle = 0, iowait = 0, irq = 0, softirq = 0, steal = 0, guest = 0,
+               guest_nice = 0;
+  int i =
+      sscanf(buff, "cpu %u %u %u %u %u %u %u %u %u %u", &user, &nice, &system,
+             &idle, &iowait, &irq, &softirq, &steal, &guest, &guest_nice);
+  if (i != EOF && i < 10) {
+    log_error("SystemInfo: scan file error\"%s\"\n", path);
+  }
+
+  *core_time = user + nice + system;
+  *total_time = user + nice + system + idle + iowait + irq + softirq + steal +
+                guest + guest_nice;
+
+  fclose(file);
+  return 0;
+}
+
 int ip4_address(char *addr_str) {
   struct ifaddrs *ifaddr = NULL;
   // https://man7.org/linux/man-pages/man3/getifaddrs.3.html
   if (getifaddrs(&ifaddr) < 0) {
-    log_error("Error: getifaddrs");
+    log_error("SystemInfo: getifaddrs\n");
     return -1;
   }
 
