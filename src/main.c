@@ -3,7 +3,7 @@
  * License           : GNU GENERAL PUBLIC LICENSE v3.0
  * Author            : fantasticmao <maomao8017@gmail.com>
  * Date              : 23.03.2021
- * Last Modified Date: 17.04.2021
+ * Last Modified Date: 18.04.2021
  * Last Modified By  : fantasticmao <maomao8017@gmail.com>
  */
 #include <arpa/inet.h>
@@ -103,7 +103,7 @@ static void get_cpuinfo(char *cpuinfo, unsigned long *core_time,
             (float)(total_time_this - *total_time);
   }
 
-  sprintf(cpuinfo, "CPU Usage:%.2f%%", usage);
+  sprintf(cpuinfo, "CPU Usage:%.2f%%", usage * 100);
 
   *core_time = core_time_this;
   *total_time = total_time_this;
@@ -113,5 +113,5 @@ static void get_meminfo(char *meminfo) {
   unsigned long free_mem = 0, total_mem = 0;
   mem_usage(&free_mem, &total_mem);
   float usage = (float)(total_mem - free_mem) / (float)total_mem;
-  sprintf(meminfo, "Mem Usage:%.2f%%", usage);
+  sprintf(meminfo, "Mem Usage:%.2f%%", usage * 100);
 }
