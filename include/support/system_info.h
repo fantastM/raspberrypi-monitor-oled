@@ -9,14 +9,12 @@
 #ifndef __SYSTEM_INFO_H_
 #define __SYSTEM_INFO_H_
 
-int cpu_usage(unsigned int *core_time, unsigned int *total_time);
+int ip4_address(char *addr_buff);
+
+int cpu_usage(unsigned long *core_time, unsigned long *total_time);
 
 float cpu_temp();
 
-float mem_usage();
-
-int ip4_address(char *addr_buff);
-
-char *system_time();
+int mem_usage(unsigned long *free_mem, unsigned long *total_mem);
 
 #endif

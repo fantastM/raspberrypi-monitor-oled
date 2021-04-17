@@ -22,10 +22,12 @@
 
 bool DEBUG_MODE = false;
 
-static void get_cpuinfo(char *cpuinfo, unsigned int *core_time,
-                        unsigned int *total_time);
-
 static void get_ipinfo(char *ipinfo);
+
+static void get_cpuinfo(char *cpuinfo, unsigned long *core_time,
+                        unsigned long *total_time);
+
+static void get_meminfo(char *meminfo);
 
 int main(int argc, char *argv[]) {
   DEBUG_MODE = true;
@@ -41,28 +43,32 @@ int main(int argc, char *argv[]) {
   // instance name
   char *nameinfo = "Name:Raspi-001";
 
-  // CPU info
-  unsigned int core_time = 0;
-  unsigned int total_time = 0;
-  char cpuinfo[30];
-  get_cpuinfo(cpuinfo, &core_time, &total_time);
-
   // IPv4 info
   char ipinfo[30];
   get_ipinfo(ipinfo);
 
+  // CPU info
+  unsigned long core_time = 0;
+  unsigned long total_time = 0;
+  char cpuinfo[30];
+  get_cpuinfo(cpuinfo, &core_time, &total_time);
+
+  // Memory info
+  char meminfo[30];
+  get_meminfo(meminfo);
+
   const char *text[] = {"!\"#$%&'()*+,-./012345", "6789:;<=>?@AaBbCcDdEe",
                         "FfGgHhIiJjKkLlMmNnOoP", "pQqRrSsTtUuVvWwXxYyZz"};
   text[0] = nameinfo;
-  text[1] = cpuinfo;
-  text[2] = ipinfo;
 
   for (;;) {
-    get_cpuinfo(cpuinfo, &core_time, &total_time);
     get_ipinfo(ipinfo);
+    get_cpuinfo(cpuinfo, &core_time, &total_time);
+    get_meminfo(meminfo);
 
-    text[1] = cpuinfo;
-    text[2] = ipinfo;
+    text[1] = ipinfo;
+    text[2] = cpuinfo;
+    text[3] = meminfo;
 
     fillimg_text(img, text, sizeof text / sizeof text[0], &font6x8);
     screen screen = cropimg(img, 0);
@@ -71,18 +77,24 @@ int main(int argc, char *argv[]) {
   }
 }
 
-static void get_cpuinfo(char *cpuinfo, unsigned int *core_time,
-                        unsigned int *total_time) {
-  unsigned int core_time_this = 0;
-  unsigned int total_time_this = 0;
-  float usage = 0;
+static void get_ipinfo(char *ipinfo) {
+  char addr_str[INET_ADDRSTRLEN];
+  if (ip4_address(addr_str) != 0) {
+    log_error("Main - get IP address info error\n");
+  }
+
+  sprintf(ipinfo, "IP:%s", addr_str);
+}
+
+static void get_cpuinfo(char *cpuinfo, unsigned long *core_time,
+                        unsigned long *total_time) {
+  unsigned long core_time_this = 0;
+  unsigned long total_time_this = 0;
+  float usage;
 
   if (cpu_usage(&core_time_this, &total_time_this) != 0) {
     log_error("Main - get cpu usage error\n");
   }
-  log_info("core time pre: %u, total time pre: %u\n", *core_time, *total_time);
-  log_info("core time this: %u, total time this: %u\n", core_time_this,
-           total_time_this);
 
   if (*core_time == 0 || *total_time == 0) {
     usage = 0;
@@ -97,11 +109,9 @@ static void get_cpuinfo(char *cpuinfo, unsigned int *core_time,
   *total_time = total_time_this;
 }
 
-static void get_ipinfo(char *ipinfo) {
-  char addr_str[INET_ADDRSTRLEN];
-  if (ip4_address(addr_str) != 0) {
-    log_error("Main - get IP address info error\n");
-  }
-
-  sprintf(ipinfo, "IP:%s", addr_str);
+static void get_meminfo(char *meminfo) {
+  unsigned long free_mem = 0, total_mem = 0;
+  mem_usage(&free_mem, &total_mem);
+  float usage = (float)(total_mem - free_mem) / (float)total_mem;
+  sprintf(meminfo, "Mem Usage:%.2f%%", usage);
 }
