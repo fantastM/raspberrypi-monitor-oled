@@ -3,7 +3,7 @@
  * License           : GNU GENERAL PUBLIC LICENSE v3.0
  * Author            : fantasticmao <maomao8017@gmail.com>
  * Date              : 30.03.2021
- * Last Modified Date: 02.04.2021
+ * Last Modified Date: 17.04.2021
  * Last Modified By  : fantasticmao <maomao8017@gmail.com>
  */
 #include <signal.h>
@@ -129,8 +129,8 @@ int main(int argc, char *argv[]) {
   const uint8_t img_pages = data_bytes / SCREEN_WIDTH_PX;
   const uint8_t img_pages_overflow = img_pages - SCREEN_PAGE_NUM;  // 8 - 4
 
-  const struct image *img = newimg_buffer(
-      SCREEN_WIDTH_PX, img_pages * PAGE_HEIGHT_PX, data, data_bytes);
+  struct image *img = newimg(SCREEN_WIDTH_PX, img_pages * PAGE_HEIGHT_PX);
+  fillimg_buffer(img, data, data_bytes);
 
   // scroll loop
   for (int i = 0, down = true;;) {

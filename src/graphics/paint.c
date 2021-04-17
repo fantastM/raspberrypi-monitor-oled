@@ -3,7 +3,7 @@
  * License           : GNU GENERAL PUBLIC LICENSE v3.0
  * Author            : fantasticmao <maomao8017@gmail.com>
  * Date              : 24.03.2021
- * Last Modified Date: 02.04.2021
+ * Last Modified Date: 17.04.2021
  * Last Modified By  : fantasticmao <maomao8017@gmail.com>
  */
 #include "graphics/paint.h"
@@ -11,8 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct image *newimg_buffer(const uint8_t width_px, const uint8_t height_px,
-                            const char *data, const uint16_t data_bytes) {
+struct image *newimg(const uint8_t width_px, const uint8_t height_px) {
   // init image
   struct image *img = (struct image *)malloc(sizeof(struct image));
   img->width_px = width_px;
@@ -20,26 +19,21 @@ struct image *newimg_buffer(const uint8_t width_px, const uint8_t height_px,
   const uint16_t area_px = img->width_px * img->height_px;
   const uint16_t area_bytes = area_px / 8;
   img->buf = (uint8_t *)calloc(area_bytes, sizeof(uint8_t));
+  return img;
+}
 
+void fillimg_buffer(struct image *img, const char *data,
+                    const uint16_t data_bytes) {
   // fill image buffer
+  const uint16_t area_bytes = img->width_px * img->height_px / 8;
   const uint16_t data_newbytes =
       (data_bytes < area_bytes) ? data_bytes : area_bytes;
   memcpy(img->buf, (uint8_t *)data, data_newbytes);
   memset(img->buf + data_bytes, 0x00, area_bytes - data_newbytes);
-  return img;
 }
 
-struct image *newimg_text(const uint8_t width_px, const uint8_t height_px,
-                          const char *text[], const uint8_t text_lines,
-                          const struct font *font) {
-  // init image
-  struct image *img = (struct image *)malloc(sizeof(struct image));
-  img->width_px = width_px;
-  img->height_px = height_px;
-  const uint16_t area_px = img->width_px * img->height_px;
-  const uint16_t area_bytes = area_px / 8;
-  img->buf = (uint8_t *)calloc(area_bytes, sizeof(uint8_t));
-
+void fillimg_text(struct image *img, const char *text[],
+                  const uint8_t text_lines, const struct font *font) {
   // fill image text
   uint8_t *imgbuf = img->buf;
   const uint8_t line_fonts = img->width_px / font->width_px;
@@ -55,7 +49,6 @@ struct image *newimg_text(const uint8_t width_px, const uint8_t height_px,
       imgbuf += img->width_px - k;
     }
   }
-  return img;
 }
 
 void freeimg(struct image *img) {

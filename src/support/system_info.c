@@ -3,7 +3,7 @@
  * License           : GNU GENERAL PUBLIC LICENSE v3.0
  * Author            : fantasticmao <maomao8017@gmail.com>
  * Date              : 16.04.2021
- * Last Modified Date: 16.04.2021
+ * Last Modified Date: 17.04.2021
  * Last Modified By  : fantasticmao <maomao8017@gmail.com>
  */
 #include "support/system_info.h"
@@ -26,13 +26,13 @@ int cpu_usage(unsigned int *core_time, unsigned int *total_time) {
   FILE *file = fopen(path, "r");
   if (file == NULL) {
     log_error("SystemInfo: %s \"%s\"\n", strerror(errno), path);
-    return 0;
+    return -1;
   }
 
   char buff[100];
   if (fgets(buff, 100, file) == NULL) {
     log_error("SystemInfo: read file error\"%s\"\n", path);
-    return 0;
+    return -1;
   }
 
   unsigned int user = 0, nice = 0, system = 0;
@@ -43,6 +43,7 @@ int cpu_usage(unsigned int *core_time, unsigned int *total_time) {
              &idle, &iowait, &irq, &softirq, &steal, &guest, &guest_nice);
   if (i != EOF && i < 10) {
     log_error("SystemInfo: scan file error\"%s\"\n", path);
+    return -1;
   }
 
   *core_time = user + nice + system;

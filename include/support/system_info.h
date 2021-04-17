@@ -19,6 +19,4 @@ int ip4_address(char *addr_buff);
 
 char *system_time();
 
-char *instance_name();
-
 #endif
