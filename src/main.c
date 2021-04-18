@@ -3,7 +3,7 @@
  * License           : GNU GENERAL PUBLIC LICENSE v3.0
  * Author            : fantasticmao <maomao8017@gmail.com>
  * Date              : 23.03.2021
- * Last Modified Date: 18.04.2021
+ * Last Modified Date: 19.04.2021
  * Last Modified By  : fantasticmao <maomao8017@gmail.com>
  */
 #include <arpa/inet.h>
@@ -37,11 +37,6 @@ int main(int argc, char *argv[]) {
 
   signal(SIGINT, quit);
 
-  oled_turn_on();
-
-  struct font font6x8 = {6, 8};
-  struct image *img = newimg(SCREEN_WIDTH_PX, SCREEN_HEIGHT_PX);
-
   // instance name
   char *name_info = "Name:Raspi-001";
 
@@ -59,30 +54,34 @@ int main(int argc, char *argv[]) {
   // Memory usage info
   char mem_usage_info[30];
 
-  // 0: instance name, 1: ip address, 2: cpu usage
-  // 3: cpu temperature, 4: mem usage
-  const uint8_t pages = 5;
+  // 0: instance name or ip address, 1: cpu usage
+  // 2: cpu temperature, 3: mem usage
+  const int pages = SCREEN_PAGE_NUM;
   const char *text[pages];
-  const uint8_t pages_overflow = pages - SCREEN_PAGE_NUM;
 
-  text[0] = name_info;
-  for (int i = 0, down = true;;) {
-    get_ip_info(ip_info);
+  struct font font6x8 = {6, 8};
+  struct image *img = newimg(SCREEN_WIDTH_PX, pages * PAGE_HEIGHT_PX);
+
+  oled_turn_on();
+  for (int i = 0;; i++) {
+    if (i % 2 != 0) {
+      get_ip_info(ip_info);
+    }
     get_cpu_usage_info(cpu_usage_info, &core_time, &total_time);
     get_cpu_temp_info(cpu_temp_info);
     get_mem_usage_info(mem_usage_info);
 
-    text[1] = ip_info;
-    text[2] = cpu_usage_info;
-    text[3] = cpu_temp_info;
-    text[4] = mem_usage_info;
+    text[0] = (i % 2 == 0) ? name_info : ip_info;
+    text[1] = cpu_usage_info;
+    text[2] = cpu_temp_info;
+    text[3] = mem_usage_info;
 
     fillimg_text(img, text, sizeof text / sizeof text[0], &font6x8);
-    screen screen = cropimg(img, i);
+    screen screen = cropimg(img, 0);
     oled_display(screen);
-    i = i + (down ? 1 : -1);
-    if (i >= pages_overflow || i <= 0) {
-      down = !down;
+
+    if (i >= 100) {
+      i = 0;
     }
     sleep(1);
   }
