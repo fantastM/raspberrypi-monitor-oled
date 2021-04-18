@@ -14,6 +14,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
 
@@ -75,6 +76,25 @@ int cpu_usage(unsigned long *core_time, unsigned long *total_time) {
   *core_time = user + nice + system;
   *total_time = user + nice + system + idle + iowait + irq + softirq + steal +
                 guest + guest_nice;
+
+  fclose(file);
+  return 0;
+}
+
+int cpu_temp(unsigned int *temp) {
+  char *path = "/sys/class/thermal/thermal_zone0/temp";
+  FILE *file = fopen(path, "r");
+  if (file == NULL) {
+    log_error("SystemInfo: %s \"%s\"\n", strerror(errno), path);
+    return -1;
+  }
+  char buff[20];
+  if (fgets(buff, 20, file) == NULL) {
+    log_error("SystemInfo: read file error\"%s\"\n", path);
+    return -1;
+  }
+
+  *temp = atoi(buff);
 
   fclose(file);
   return 0;

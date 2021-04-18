@@ -13,7 +13,7 @@ int ip4_address(char *addr_buff);
 
 int cpu_usage(unsigned long *core_time, unsigned long *total_time);
 
-float cpu_temp();
+int cpu_temp(unsigned int *temp);
 
 int mem_usage(unsigned long *free_mem, unsigned long *total_mem);
 

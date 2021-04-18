@@ -21,7 +21,7 @@ struct image {
   uint8_t *buf;
 };
 
-struct image *newimg(const uint8_t width_px, const uint8_t height_px);
+struct image *newimg(uint8_t width_px, uint8_t height_px);
 
 void fillimg_buffer(struct image *img, const char data[], uint16_t data_bytes);
 

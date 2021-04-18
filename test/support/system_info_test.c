@@ -26,6 +26,7 @@ int main(int argc, char *argv[]) {
   printf("==== start unit test ====\n");
   test_ip4_address();
   test_cpu_usage();
+  test_cpu_temp();
   test_mem_usage();
   printf("==== end unit test ====\n");
 }
@@ -44,6 +45,13 @@ static void test_cpu_usage() {
   assert(i == 0);
   printf("[test_cpu_usage] core time: %lu, total time: %lu\n", core_time,
          total_time);
+}
+
+static void test_cpu_temp() {
+  unsigned int temp = 0;
+  int i = cpu_temp(&temp);
+  assert(i == 0);
+  printf("[test_cpu_temp] temp: %u\n", temp);
 }
 
 static void test_mem_usage() {
